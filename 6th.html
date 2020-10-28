@@ -1,0 +1,75 @@
+<html>
+  <head>
+	<title>Who's the 6th?</title>
+    <style type="text/css">
+
+      #informations {
+          clear:both;
+          font-size: small;
+      }
+
+      .idols {
+        list-style: none;
+      }
+
+      .box {
+        margin: 10px;
+        float: left;
+        display: inline-block;
+      }
+      form {
+        margin: 0;
+      }
+
+      .data,  .correct {
+        visibility: hidden;
+      }
+
+      h2 {
+
+      }
+
+    </style>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+  </head>
+  <body onload="init()">
+      <h1 class="bg-primary text-light">6人目はだぁれ</h1>
+
+      <div id="options" style="clear: left;">
+        <form>
+          事務所選択：<span id="title_selection"></span>
+        </form>
+        <form>
+          データ選択：<span id="data_selection"></span>
+        </form>
+      </div>
+
+
+      <div id="samples" class="box"></div>
+      <div class="box">
+        <span id="candidates"></span>
+        <div class="text-right" style="margin: 10px;" id="btn-next" style="visibility: hidden;" >
+          <span id="chosen_key"></span>
+          <button type="button" class="btn btn-primary" onclick="refresh_list();">次の魔女っ子</button>
+        </div>
+      </div>
+      
+      <div id="stats" class="box"></div>
+
+
+
+      <div id="informations">
+        <ul>
+
+        </ul>
+      </div>
+      <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+    <script src="6th.js" type="text/javascript"></script>
+  </body>
+</html>
