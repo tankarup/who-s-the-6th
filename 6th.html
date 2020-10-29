@@ -40,7 +40,7 @@
 
   </head>
   <body onload="init()">
-    <div class="row"><div  class="mx-auto w-90" id="content">
+    <div class="row"><div class="mx-auto col-8" id="content">
       <h1 class="bg-primary text-light h3 text-center">6人目はだぁれ</h1>
 
       <div id="options" style="clear: left;">
@@ -52,27 +52,28 @@
         </form>
       </div>
 
-
-      <div class="box">
-        <h2 class="h4 alert-primary">さぁいらっしゃい</h2>
-        <div id="samples"></div>
-      </div>
-      <div class="box">
-        <h2 class="h4 alert-primary">6人目はだぁれ?</h2>
-        <span id="candidates"></span>
-        <div class="text-right" style="margin: 10px;" id="btn-next" style="visibility: hidden;" >
-          <span id="chosen_key"></span>
-          <button type="button" class="btn btn-primary" onclick="refresh_list();">次の魔女っ子</button>
+      <div class="row"><div class="col-10 offset-1">
+        <div class="box">
+          <h2 class="h4 alert-primary">さぁいらっしゃい</h2>
+          <div id="samples"></div>
         </div>
-      </div>
-      
-      <div class="box">
-        <h2 class="h4 alert-primary">秘密のお話</h2>
-        <div id="stats"></div>
-        <div class="text-right" style="margin: 10px;" id="btn-delete" style="" >
-          <button type="button" class="btn btn-outline-danger btn-sm" onclick="delete_score();">スコア消去</button>
+        <div class="box">
+          <h2 class="h4 alert-primary">6人目はだぁれ?</h2>
+          <span id="candidates"></span>
+          <div class="text-right" style="margin: 10px;" id="btn-next" style="visibility: hidden;" >
+            <span id="chosen_key"></span>
+            <button type="button" class="btn btn-primary" onclick="refresh_list();">次の魔女っ子</button>
+          </div>
         </div>
-      </div>
+        
+        <div class="box">
+          <h2 class="h4 alert-primary">秘密のお話</h2>
+          <div id="stats"></div>
+          <div class="text-right" style="margin: 10px;" id="btn-delete" style="" >
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="delete_score();">スコア消去</button>
+          </div>
+        </div>
+      </div></div>
 
 
 

@@ -214,7 +214,7 @@ function save_score(){
   localStorage.setItem('whos6th_score', JSON.stringify(score));
 }
 function delete_score(){
-  localStorage.removeItem('whos6th_score');
+  localStorage.setItem('whos6th_score', null);
   score = null;
   load_score();
   show_score();
@@ -230,7 +230,7 @@ function load_score(){
     console.log(e);
   }
   //スコアの初期化
-  if (!score.total) score = {total: 0, correct: 0};
+  if (!score) score = {total: 0, correct: 0};
   for (let title of titles){
     if (!score[title[1]]) score[title[1]] = {};
     for (let data of datas){
