@@ -22,7 +22,7 @@ const titles = [
   ['全て', 'all_title', 'all_title'],
 ];
 
-let score = {};
+let score = {total: 0, correct: 0};
 
 //事務所とデータの設定が変更されたら、随時リストを更新
 
@@ -214,8 +214,8 @@ function save_score(){
   localStorage.setItem('whos6th_score', JSON.stringify(score));
 }
 function delete_score(){
-  localStorage.setItem('whos6th_score', null);
-  score = null;
+  localStorage.setItem('whos6th_score', {});
+  score = {total: 0, correct: 0};
   load_score();
   show_score();
 }
