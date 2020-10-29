@@ -230,7 +230,7 @@ function load_score(){
     console.log(e);
   }
   //スコアの初期化
-  if (!score) score = {total: 0, correct: 0};
+  if (!score || !score.total) score = {total: 0, correct: 0};
   for (let title of titles){
     if (!score[title[1]]) score[title[1]] = {};
     for (let data of datas){
