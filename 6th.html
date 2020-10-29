@@ -25,8 +25,12 @@
         visibility: hidden;
       }
 
+      label {
+        margin-right: 15px ;
+        margin-bottom: 0px;
+      }
       h2 {
-
+        padding: 2px;
       }
 
     </style>
@@ -36,20 +40,25 @@
 
   </head>
   <body onload="init()">
-      <h1 class="bg-primary text-light">6人目はだぁれ</h1>
+    <div class="row"><div  class="mx-auto w-90" id="content">
+      <h1 class="bg-primary text-light h3 text-center">6人目はだぁれ</h1>
 
       <div id="options" style="clear: left;">
         <form>
           事務所選択：<span id="title_selection"></span>
         </form>
-        <form>
+        <form class="bg-light">
           データ選択：<span id="data_selection"></span>
         </form>
       </div>
 
 
-      <div id="samples" class="box"></div>
       <div class="box">
+        <h2 class="h4 alert-primary">さぁいらっしゃい</h2>
+        <div id="samples"></div>
+      </div>
+      <div class="box">
+        <h2 class="h4 alert-primary">6人目はだぁれ?</h2>
         <span id="candidates"></span>
         <div class="text-right" style="margin: 10px;" id="btn-next" style="visibility: hidden;" >
           <span id="chosen_key"></span>
@@ -57,7 +66,13 @@
         </div>
       </div>
       
-      <div id="stats" class="box"></div>
+      <div class="box">
+        <h2 class="h4 alert-primary">秘密のお話</h2>
+        <div id="stats"></div>
+        <div class="text-right" style="margin: 10px;" id="btn-delete" style="" >
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="delete_score();">スコア消去</button>
+        </div>
+      </div>
 
 
 
@@ -66,6 +81,7 @@
 
         </ul>
       </div>
+    </div></div>
       <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

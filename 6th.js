@@ -22,10 +22,7 @@ const titles = [
   ['全て', 'all_title', 'all_title'],
 ];
 
-let score = {
-  'total': 0,
-  'correct': 0,
-};
+let score = {};
 
 //事務所とデータの設定が変更されたら、随時リストを更新
 
@@ -97,7 +94,7 @@ function data_str(data, category){
 }
 
 function init_options(){
-
+  //事務所一覧をメニュー表示
   let title_selection = '';
   for (let i = 0; i < titles.length; i++){
     const title = titles[i];
@@ -111,7 +108,7 @@ function init_options(){
   }
   document.getElementById("title_selection").innerHTML = title_selection;
 
-
+  //データ一覧をメニュー表示
   let data_selection = '';
   for (let i = 0; i < datas.length; i++){
     const data = datas[i];
@@ -132,7 +129,7 @@ function init_options(){
 
 
 //選択肢を選んだ
-function on_answered(correct, button_id) {
+function on_answered(correct, key, title, button_id) {
   if (answered) return;
   answered = true;
   
@@ -168,52 +165,77 @@ function on_answered(correct, button_id) {
   });
 
   //得点表示
-  update_score(correct);
+  update_score(correct, key, title);
 
   
 }
 
 //得点表示
-function update_score(ansewer){
-  let total = score.total;
-  let correct = score.correct;
+function update_score(ansewer, key, title){
 
-  total += 1;
-  correct += ansewer ? 1 : 0;
 
-  score.total = total;
-  score.correct = correct;
+  if (!score) score = {total: 0, correct: 0};
+  if (!score[title]) score[title] = {};
+  if (!score[title][key]) score[title][key] = {total: 0, correct: 0};
+
+  score.total += 1;
+  score.correct += ansewer ? 1 : 0;
+
+  score[title][key].total +=1;
+  score[title][key].correct += ansewer ? 1 : 0;
 
   show_score();
   save_score();
 }
-
+function rate(correct, total){
+  return total ? Math.floor(correct/total*100) : 0;
+}
 function show_score(){
   const total = score.total;
   const correct = score.correct;
 
-  const rate = total ? Math.floor(correct/total*100) : 0;
+  let innerhtml = '';
 
-  document.getElementById('stats').innerHTML = `
-  <h2>秘密のお話</h2>
-  <p>${rate}% (${correct}/${total})</p>`;
+  innerhtml +=`<table class="table table-sm">`;
+  innerhtml += `<tr class=""><th>総正答率</th><th>${rate(correct, total)}%</th><th>(${correct}/${total})</th></tr>`;
+  for (let title of titles){
+    let correct = 0, total = 0;
+    for (let data of datas){
+      total += score[title[1]][data[1]].total;
+      correct += score[title[1]][data[1]].correct;
+    }
+    innerhtml += `<tr><td>${title[0]}</td><td>${rate(correct, total)}%</td><td>(${correct}/${total})</td></tr>`;
+  }
+  innerhtml += `</table>`;
+  document.getElementById('stats').innerHTML = innerhtml;
 }
 
 function save_score(){
   localStorage.setItem('whos6th_score', JSON.stringify(score));
 }
-
+function delete_score(){
+  localStorage.removeItem('whos6th_score');
+  score = null;
+  load_score();
+  show_score();
+}
 function load_score(){
   try {
     const saved_score = localStorage.getItem('whos6th_score');
     if (saved_score){
       score = JSON.parse(saved_score);
-    } else {
-      score = {'total': 0, 'correct':0};
     }
     
   } catch(e){
     console.log(e);
+  }
+  //スコアの初期化
+  if (!score.total) score = {total: 0, correct: 0};
+  for (let title of titles){
+    if (!score[title[1]]) score[title[1]] = {};
+    for (let data of datas){
+      if (!score[title[1]][data[1]]) score[title[1]][data[1]] = {total: 0, correct: 0};
+    }
   }
 
 }
@@ -315,7 +337,6 @@ function refresh_list(){
 
   //5人目までを表示
   let sample_html = '';
-  sample_html +=  `<h2>さぁいらっしゃい</h2>`
   sample_html += `<ul class="list-group">`;
   for (let i = 0; i < samples.length; i++){
     const sample = samples[i];
@@ -327,24 +348,6 @@ function refresh_list(){
   //6人目の候補を表示
   const shuffled_candidates = shuffle(candidates);
   let candidates_html = '';
-  candidates_html += `<h2>6人目はだぁれ?</h2>`;
-  /*
-  candidates_html += `<ul class="list-group">`;
-  for (let i = 0; i < candidates.length; i++){
-    const candidate = shuffled_candidates[i];
-    const correct = candidate['correct'] ? '〇' : '×'
-    candidates_html += `
-      <li class="list-group-item" onclick="on_answered(${candidate['correct']})">
-      <button type="button" class="btn btn-outline-primary">
-      ${candidate['label']} ? 
-      <span class="data">(${data_str(candidate[key],key)})</span>
-      <span class="correct">${correct}</span>
-      </button>
-      </li>
-      `;
-  }
-  candidates_html += `</ul>`;
-  */
 
   candidates_html += `<div class="btn-group-vertical" role="group" aria-label="Candidates list">`;
   for (let i = 0; i < candidates.length; i++) {
@@ -352,7 +355,7 @@ function refresh_list(){
     const correct = candidate['correct'] ? '〇' : '×';
     const button_id = 'candidate' + i;
     candidates_html += `
-    <button type="button" class="btn btn-outline-primary text-left btn-candidate" onclick="on_answered(${candidate['correct']}, \'${button_id}\')" id="${button_id}">
+    <button type="button" class="btn btn-outline-primary text-left btn-candidate" onclick="on_answered(${candidate['correct']}, \'${key}\', \'${title}\', \'${button_id}\')" id="${button_id}">
       ${candidate['label']} ? 
       <span class="data">(${data_str(candidate[key],key)})</span>
       <span class="correct">${correct}</span>
@@ -364,10 +367,6 @@ function refresh_list(){
   document.getElementById("candidates").innerHTML = candidates_html;
 
 
-
- 
-  //console.log(samples);
-  //console.log(shuffled_candidates);
 }
 
 
@@ -377,6 +376,7 @@ function init(){
   show_score();
   init_options();
   refresh_list();
+
 
 }
 
