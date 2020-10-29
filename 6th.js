@@ -197,14 +197,14 @@ function show_score(){
   let innerhtml = '';
 
   innerhtml +=`<table class="table table-sm">`;
-  innerhtml += `<tr class=""><th>総正答率</th><th>${rate(correct, total)}%</th><th>(${correct}/${total})</th></tr>`;
+  innerhtml += `<tr class=""><th>総正答率</th><th>${rate(correct, total)}%</th><th>(${correct}/${total})</th><th><span style="display:inline-block; width: ${rate(correct, total)}px; background-color: gray; color: gray;">|</span></th></tr>`;
   for (let title of titles){
     let correct = 0, total = 0;
     for (let data of datas){
       total += score[title[1]][data[1]].total;
       correct += score[title[1]][data[1]].correct;
     }
-    innerhtml += `<tr><td>${title[0]}</td><td>${rate(correct, total)}%</td><td>(${correct}/${total})</td></tr>`;
+    innerhtml += `<tr><td>${title[0]}</td><td>${rate(correct, total)}%</td><td>(${correct}/${total})</td><td><span style="display:inline-block; width: ${rate(correct, total)}px; background-color: gray; color: gray;">|</span></td></tr>`;
   }
   innerhtml += `</table>`;
   document.getElementById('stats').innerHTML = innerhtml;
@@ -214,6 +214,8 @@ function save_score(){
   localStorage.setItem('whos6th_score', JSON.stringify(score));
 }
 function delete_score(){
+  const result = window.confirm('記録されたスコアを消去してよろしいですか？');
+  if (!result) return;
   localStorage.setItem('whos6th_score', {});
   score = {total: 0, correct: 0};
   load_score();
